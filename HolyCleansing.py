@@ -215,7 +215,6 @@ comma-separated for multiple\nq to quit\n""")
 def display_whitelist():
 	whitelist = load_whitelist()
 
-	whitelist = (1, )
 	if len(whitelist) == 0:
 		print("No tvshow in the whitelist.")
 		return
