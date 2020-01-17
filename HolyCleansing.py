@@ -3,19 +3,13 @@
 
 import sqlite3
 import os
+import platform
 import argparse
 import logging
 from logging.handlers import RotatingFileHandler 
 import json
 
-DB_PATH = "/home/aymeric/Desktop/Autoclean video/MyVideos116.db"
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
-#db.set_trace_callback(print)
-
-# TvShows list
-
-# episodes to delete
-#toCleanResult = cursor.execute(query).fetchall()
 
 
 # ==============================================================================
@@ -67,6 +61,17 @@ def pretty_table(data):
 		table += "|\n"
 
 	return table
+
+
+def load_config():
+	path = os.path.join(SCRIPT_PATH, "config.json")
+	if os.path.exists(path):
+		with open(path, "r") as f:
+			APP_LOG.debug(f"Loaded config from {path}")
+			return json.load(f)
+	else:
+		APP_LOG.error(f"Could not load config from {path}")
+
 
 # ==============================================================================
 #                                  DB INTERFACE
@@ -323,8 +328,28 @@ def logger(level):
 if __name__ == "__main__":
 	# CLI args
 	args = cli()
+
 	# Logger config
 	APP_LOG = logger(args.verbose)
+
+	# Config
+	CONFIG = load_config()
+	DB_PATH = CONFIG["kodiPaths"].get(platform.system())[0]
+	if not os.path.exists(DB_PATH):
+		APP_LOG.error(f"Kodi\'s data directory couldnot be found: {DB_PATH}")
+	else:
+		APP_LOG.debug(f"Kodi\'s data directory exists: {DB_PATH}")
+
+	# TODO: REMOVE
+	DB_PATH = SCRIPT_PATH
+
+	# TODO: check db version
+	DB_PATH = os.path.join(DB_PATH, CONFIG["dbNames"][0])
+	if not os.path.exists(DB_PATH):
+		APP_LOG.error(f"Kodi\'s database couldnot be found: {DB_PATH}")
+	else:
+		APP_LOG.debug(f"Kodi\'s database exists: {DB_PATH}")
+
 	# Delete all
 	if args.clean:
 		whitelist = load_whitelist()

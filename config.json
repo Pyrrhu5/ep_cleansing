@@ -1,0 +1,16 @@
+{
+    "kodiPaths": {
+        "Linux": [
+            "~/.kodi/userdata/"
+        ],
+        "Darwin": [
+            "/Library/Application Support/Kodi/userdata/"
+        ],
+        "Windows": [
+            "%APPDATA%\\Kodi\\userdata\\"
+        ]
+    },
+    "dbNames": [
+        "MyVideos116.db"
+    ]
+}
