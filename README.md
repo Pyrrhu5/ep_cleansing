@@ -1,7 +1,9 @@
 # HolyCleansing
 
 This is a simple script to automatically delete tvshows episodes watched in the media player Kodi/OSMC.
+
 It supports a whitelist per tvshow which episodes won't be deleted.
+
 To launch it on a schedule, please use a crontab
 
 It has been tested and developed on a Linux system, but should be working properly on Windows and Mac.
@@ -9,14 +11,23 @@ It has been tested and developed on a Linux system, but should be working proper
 ## Features and usage
 
 usage: HolyCleansing.py [-h] [-s] [-c] [-t] [-a] [-d] [-r] [-v]
+
 optional arguments:
+
   -h, --help     show this help message and exit.
+
   -s, --simu     Display which episodes are going to be deleted without processing.
+
   -c, --clean    Delete all the watched episodes.
+
   -t, --tvshows  Display the list of tvshows in the database.
+
   -a, --add      Add a tvshow to the whitelist.
+
   -d, --display  Display the tvshows in the whitelist.
+
   -r, --remove   Remove tvshows from the whitelist.
+
   -v, --verbose  Increase output verbosity.
 
 ## Dependencies and installation
@@ -36,7 +47,7 @@ python3 ./HolyCleansing.py -sv
 ```
 
 ## Schedule
-The owner of the crontab should have the same rights as stipulated in the [pre-requirements](###Pre-requirements) section.
+The owner of the crontab should have the same rights as stipulated in the previous section.
 
 ```bash
 crontab -e
