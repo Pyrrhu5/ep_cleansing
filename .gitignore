@@ -1,4 +1,4 @@
 *.db
 .*.swp
 whitelist.json
-.*log
+*.log
