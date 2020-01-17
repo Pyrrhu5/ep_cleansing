@@ -286,20 +286,25 @@ def cli():
 						help="Remove tvshows from the whitelist",
 						action="store_true"
 						)
-
+	parser.add_argument("-v", 
+						"--verbose",
+						help="Increase output verbosity",
+                        action="store_const",
+						const=logging.DEBUG,
+						default=logging.INFO
+						)
 
 	return parser.parse_args()
 
 
 if __name__ == '__main__':
-	logging.basicConfig(level=logging.INFO,
+	args = cli()
+	logging.basicConfig(level=args.verbose,
 						filename='AutoDeleteTvShows.log',
 						filemode='a', 
-						format='%(asctime)s - %(message)s',
-						datefmt='%d-%b-%y %H:%M:%S'
+						format='%(asctime)s - %(levelname)s - %(message)s',
+						datefmt='%d-%b-%y %H:%M'
 						)
-
-	args = cli()
 
 	# Delete all
 	if args.clean:
