@@ -305,8 +305,10 @@ def cli():
 
 def logger(level):
 
-	logFormatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+	logFormatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s",
+									datefmt="%d-%b-%y %H:%M")
 	logFile = "HolyCleansing.log"
+	# file handler
 	handler = RotatingFileHandler(logFile,
 								mode='a',
 								maxBytes=5*1024*1024, 
@@ -316,11 +318,15 @@ def logger(level):
 								)
 	handler.setFormatter(logFormatter)
 	handler.setLevel(level)
+	# console handler
+	console = logging.StreamHandler()
+	console.setFormatter(logFormatter)
 
 	appLog = logging.getLogger('root')
 	appLog.setLevel(level)
 
 	appLog.addHandler(handler)
+	appLog.addHandler(console)
 
 	return appLog
 
