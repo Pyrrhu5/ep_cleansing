@@ -5,6 +5,7 @@ import sqlite3
 import os
 import argparse
 import logging
+from logging.handlers import RotatingFileHandler 
 import json
 
 DB_PATH = "/home/aymeric/Desktop/Autoclean video/MyVideos116.db"
@@ -74,7 +75,7 @@ def connect(dbPath):
 	try:
 		db = sqlite3.connect(dbPath)
 	except Exception as e:
-		logging.error(f"Connexion to the database failed. Check the path: {dbPath}")
+		APP_LOG.error(f"Connexion to the database failed. Check the path: {dbPath}")
 	else:
 		return db, db.cursor()
 
@@ -85,14 +86,14 @@ def query(cursor, query_, info):
 	try:
 		results = cursor.execute(query_)
 	except Exception as e:
-		logging.error(f"Query to fetch {info} failed.", exc_info=True)
-		logging.error(query_)
+		APP_LOG.error(f"Query to fetch {info} failed.", exc_info=True)
+		APP_LOG.error(query_)
 	else:
 		results = results.fetchall()
 		results = dict_factory(cursor, results)
 
-		logging.debug:gc(f"Query to fetch {info} successful: {len(results)} rows")
-		logging.debug(f"\n{pretty_table(results)}")
+		APP_LOG.debug:gc(f"Query to fetch {info} successful: {len(results)} rows")
+		APP_LOG.debug(f"\n{pretty_table(results)}")
 
 		return results 
 
@@ -169,9 +170,9 @@ def input_validation(choice, validLst):
 def load_whitelist():
 
 	if not os.path.exists(WHITELIST_PATH):
-		logging.debug:gc(f"No json file at {WHITELIST_PATH}")
+		APP_LOG.debug:gc(f"No json file at {WHITELIST_PATH}")
 		return list()
-	else: logging.debug(f"Loaded white list from {WHITELIST_PATH}")
+	else: APP_LOG.debug(f"Loaded white list from {WHITELIST_PATH}")
 
 	with open(WHITELIST_PATH, 'r') as f:
 		return json.load(f)
@@ -196,7 +197,7 @@ comma-separated for multiple\nq to quit\n""")
 
 	choice = input_validation(choice, tvshows)
 
-	logging.debug:gc(f"{len(choice)} tvshow(s) were added to the whitelist")
+	APP_LOG.debug(f"{len(choice)} tvshow(s) were added to the whitelist")
 	whitelist += choice
 
 	save_whitelist(whitelist)
@@ -235,7 +236,7 @@ comma-separated for multiple\n""")
 
 	choice = input_validation(choice, tvshows)
 
-	logging.debug:gc(f"{len(choice)} tvshow(s) were removed from the whitelist")
+	APP_LOG.debug:gc(f"{len(choice)} tvshow(s) were removed from the whitelist")
 	for x in choice: whitelist.remove(x)
 
 	save_whitelist(whitelist)
@@ -297,15 +298,33 @@ def cli():
 	return parser.parse_args()
 
 
-if __name__ == '__main__':
-	args = cli()
-	logging.basicConfig(level=args.verbose,
-						filename='AutoDeleteTvShows.log',
-						filemode='a', 
-						format='%(asctime)s - %(levelname)s - %(message)s',
-						datefmt='%d-%b-%y %H:%M'
-						)
+def logger(level):
 
+	logFormatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+	logFile = "HolyCleansing.log"
+	handler = RotatingFileHandler(logFile,
+								mode='a',
+								maxBytes=5*1024*1024, 
+                                backupCount=1,
+								encoding=None,
+								delay=0
+								)
+	handler.setFormatter(logFormatter)
+	handler.setLevel(level)
+
+	appLog = logging.getLogger('root')
+	appLog.setLevel(level)
+
+	appLog.addHandler(handler)
+
+	return appLog
+
+
+if __name__ == "__main__":
+	# CLI args
+	args = cli()
+	# Logger config
+	APP_LOG = logger(args.verbose)
 	# Delete all
 	if args.clean:
 		whitelist = load_whitelist()
@@ -315,11 +334,11 @@ if __name__ == '__main__':
 			try:
 				os.remove(row['file_path'])
 			except FileNotFoundError:
-				logging.error(f"Error while deleting, file not found:\n {row['file_path']}")
+				APP_LOG.error(f"Error while deleting, file not found:\n {row['file_path']}")
 			except Exception:
-				logging.error(f"Error while deleting {row['file_path']}", exc_info=True)
+				APP_LOG.error(f"Error while deleting {row['file_path']}", exc_info=True)
 			else:
-				logging.info(f"{row['tvshow']} - S{row['season']}E{row['episode']} deleted.")
+				APP_LOG.info(f"{row['tvshow']} - S{row['season']}E{row['episode']} deleted.")
 		db.close()
 
 	# Display the list of available tvshows
