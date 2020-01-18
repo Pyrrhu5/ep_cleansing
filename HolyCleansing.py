@@ -340,6 +340,7 @@ if __name__ == "__main__":
 	# Config
 	CONFIG = load_config()
 	DB_PATH = CONFIG["kodiPaths"].get(platform.system())[0]
+	DB_PATH = os.path.expanduser(DB_PATH)
 	if not os.path.exists(DB_PATH):
 		APP_LOG.error(f"Kodi\'s data directory couldnot be found: {DB_PATH}")
 	else:
