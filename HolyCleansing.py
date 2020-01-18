@@ -303,7 +303,7 @@ def cli():
 
 
 def logger(level):
-	strFormat = "%(asctime)s - %(levelname)s - %(filename)s:%(funcName)-20s:%(lineno)-3s - %(message)s"
+	strFormat = "%(asctime)s - %(levelname)-7s - %(filename)s:%(funcName)-20s:%(lineno)-3s - %(message)s"
 	logFormatter = logging.Formatter(strFormat,
 									datefmt="%d-%b-%y %H:%M")
 	logFile = "HolyCleansing.log"
