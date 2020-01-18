@@ -345,9 +345,6 @@ if __name__ == "__main__":
 	else:
 		APP_LOG.debug(f"Kodi\'s data directory exists: {DB_PATH}")
 
-	# TODO: REMOVE
-	DB_PATH = SCRIPT_PATH
-
 	# TODO: check db version
 	DB_PATH = os.path.join(DB_PATH, CONFIG["dbNames"][0])
 	if not os.path.exists(DB_PATH):
