@@ -299,7 +299,7 @@ def cli():
 						default=logging.INFO
 						)
 
-	return parser.parse_args()
+	return parser, parser.parse_args()
 
 
 def logger(level):
@@ -332,7 +332,7 @@ def logger(level):
 
 if __name__ == "__main__":
 	# CLI args
-	args = cli()
+	parser, args = cli()
 
 	# Logger config
 	APP_LOG = logger(args.verbose)
@@ -399,9 +399,10 @@ if __name__ == "__main__":
 	# Remove tvshows from the whitelist
 	elif args.remove:
 		remove_whitelist()
-
-	# TODO: logging level
-	# TODO: set db path and test
+	
+	# default
+	else:
+		APP_LOG.warn(f"No option selected. No action done.\nPlease choose an option.")
+		parser.print_help()	
 	# TODO: run and clean kodi's lib
 	# TODO: safe SQL
-	# TODO: set debug level
