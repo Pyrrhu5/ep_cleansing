@@ -1,4 +1,3 @@
-
 # HolyCleansing
 
 This is a simple script to automatically delete tvshows episodes watched in the media player Kodi/OSMC.
@@ -101,6 +100,11 @@ _Once a month (the 1th) at 01 in the morning_
 ```cron
 00 01 1 * * python3 <installDirectory>/HolyCleansing.py -c
 ```
+## Logs
+The logs are found in the install directory of the script, they are cleaned automatically when they exceed a set size.
+
+- `HolyCleansing.log`: main log
+- `HolyCleansing.log.1`: backup, old log
 
 ## Reporting bugs and push requests
 All contribution is welcome, just do a push requests with a tag `bug fix` or `improvement`
@@ -110,5 +114,8 @@ In case of bugs, with its description please attach the following elements:
 - Kodi's version number
 - OS name and version
 - Python's version (in a terminal `python3 --version` or `python --version` for Windows)
-- `HolyCleansing.log` file 
+- `HolyCleansing.log` file
+- steps to reproduce the bug
+
+If you can reproduce the bug, run the steps with `--verbose` option enabled before attaching the log.
 
