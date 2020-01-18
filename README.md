@@ -1,3 +1,4 @@
+
 # HolyCleansing
 
 This is a simple script to automatically delete tvshows episodes watched in the media player Kodi/OSMC.
@@ -29,15 +30,43 @@ optional arguments:
   -r, --remove   Remove tvshows from the whitelist.
 
   -v, --verbose  Increase output verbosity.
+  
+## Kodi's versions supported
+
+It has been tested and developed against Kodi Leia version 18.2. If the version is anterior, the database version[^1]  is not supported natively by the script.
+[^1]: https://kodi.wiki/view/Databases#Database_Versions
+
+To change that, add to `config.json` in the key `dbNames` with the schema `MyVideos<versionNumber>.db` then run the script with `--add` option and `--simu`. If no error is raised, all is good (please report it to me)!
+
+Example for `config.json` and database version 37
+```json
+{
+    "kodiPaths": {
+        "Linux": [
+            "~/.kodi/userdata/"
+        ],
+        "Darwin": [
+            "/Library/Application Support/Kodi/userdata/"
+        ],
+        "Windows": [
+            "%APPDATA%\\Kodi\\userdata\\"
+        ]
+    },
+    "dbNames": [
+        "MyVideos116.db",
+        "MyVideos37.db"
+    ]
+}
+```
 
 ## Dependencies and installation
 The script can be installed in any directory by cloning this repository.
 
 The user launching the script should have:
 - read and write rights on the script directory,
-- read rights on kodi's database[^1] ,
+- read rights on kodi's database[^2] ,
 - read and write rights on the tvshows directory
-[^1]: (see `config.json` to get its directory)
+[^2]: (see `config.json` to get its directory)
 
 Python version 3.6 or above
 
@@ -72,4 +101,14 @@ _Once a month (the 1th) at 01 in the morning_
 ```cron
 00 01 1 * * python3 <installDirectory>/HolyCleansing.py -c
 ```
+
+## Reporting bugs and push requests
+All contribution is welcome, just do a push requests with a tag `bug fix` or `improvement`
+
+In case of bugs, with its description please attach the following elements:
+
+- Kodi's version number
+- OS name and version
+- Python's version (in a terminal `python3 --version` or `python --version` for Windows)
+- `HolyCleansing.log` file 
 
