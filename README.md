@@ -65,7 +65,7 @@ The user launching the script should have:
 - read and write rights on the script directory,
 - read rights on kodi's database[^2] ,
 - read and write rights on the tvshows directory
-[^2]: (see `config.json` to get its directory)
+[^2]: see `config.json` to get its directory
 
 Python version 3.6 or above
 
