@@ -80,14 +80,12 @@ def load_config():
 def connect(dbPath):
 	"""Connect to the sqlite database"""
 	try:
-		db = sqlite3.connect(dbPath, FailIfMissing=True)
+		db = sqlite3.connect(dbPath)
 	except Exception as e:
-		APP_LOG.error(f"Connexion to the database failed. Check the path: {dbPath}")
+		APP_LOG.error(f"Connexion to the database failed. Check the path: {dbPath}", exc_info=True)
 		exit(1)
 	else:
-		APP_LOG.debug(f"Connexion to the database successful."
-					f"\ndb object: {db}"
-					f"\ncursor: {db.cursor()}")
+		APP_LOG.debug(f"Connexion to the database successful.")
 		return db, db.cursor()
 
 
