@@ -1,4 +1,4 @@
-# HolyCleansing
+# EpCleansing
 
 This is a simple script to automatically delete tvshows episodes watched in the media player Kodi/OSMC.
 
@@ -10,7 +10,7 @@ It has been tested and developed on a Linux system, but should be working proper
 
 ## Features and usage
 
-usage: HolyCleansing.py [-h] [-s] [-c] [-t] [-a] [-d] [-r] [-v]
+usage: EpCleansing.py [-h] [-s] [-c] [-t] [-a] [-d] [-r] [-v]
 
 optional arguments:
 
@@ -71,7 +71,7 @@ Python version 3.6 or above
 
 Use the `--simu` option to insure a correct installation:
 ```bash
-python3 ./HolyCleansing.py -sv
+python3 ./EpCleansing.py -sv
 ```
 
 ## Schedule
@@ -84,27 +84,27 @@ Examples:
 (replace <installDirectory\> by the script installation directory)
 _Every day at 01 in the morning_:
 ```cron
-00 01 * * * python3 <installDirectory>/HolyCleansing.py -c
+00 01 * * * python3 <installDirectory>/EpCleansing.py -c
 ```
 _Every 4 hours_:
 ```cron
-00 0,4,8,12,16,20 * * * python3 <installDirectory>/HolyCleansing.py -c
+00 0,4,8,12,16,20 * * * python3 <installDirectory>/EpCleansing.py -c
 ```
 
 _Once a week (Sunday) at 01 in the morning_
 ```cron
-00 01 * * 7 python3 <installDirectory>/HolyCleansing.py -c
+00 01 * * 7 python3 <installDirectory>/EpCleansing.py -c
 ```
 
 _Once a month (the 1th) at 01 in the morning_
 ```cron
-00 01 1 * * python3 <installDirectory>/HolyCleansing.py -c
+00 01 1 * * python3 <installDirectory>/EpCleansing.py -c
 ```
 ## Logs
 The logs are found in the install directory of the script, they are cleaned automatically when they exceed a set size.
 
-- `HolyCleansing.log`: main log
-- `HolyCleansing.log.1`: backup, old log
+- `EpCleansing.log`: main log
+- `EpCleansing.log.1`: backup, old log
 
 ## Reporting bugs and push requests
 All contribution is welcome, just do a push requests with a tag `bug fix` or `improvement`
@@ -114,7 +114,7 @@ In case of bugs, with its description please attach the following elements:
 - Kodi's version number
 - OS name and version
 - Python's version (in a terminal `python3 --version` or `python --version` for Windows)
-- `HolyCleansing.log` file
+- `EpCleansing.log` file
 - steps to reproduce the bug
 
 If you can reproduce the bug, run the steps with `--verbose` option enabled before attaching the log.
