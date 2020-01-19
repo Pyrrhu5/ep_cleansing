@@ -85,7 +85,9 @@ def connect(dbPath):
 		APP_LOG.error(f"Connexion to the database failed. Check the path: {dbPath}")
 		exit(1)
 	else:
-		APP_LOG.debug(f"Connexion to the database successful.")
+		APP_LOG.debug(f"Connexion to the database successful."
+					f"db object: {db}"
+					f"cursor: {db.cursor()}")
 		return db, db.cursor()
 
 
