@@ -71,6 +71,7 @@ def load_config():
 			return json.load(f)
 	else:
 		APP_LOG.error(f"Could not load config from {path}")
+		exit(1)
 
 
 # ==============================================================================
@@ -81,6 +82,7 @@ def connect(dbPath):
 		db = sqlite3.connect(dbPath)
 	except Exception as e:
 		APP_LOG.error(f"Connexion to the database failed. Check the path: {dbPath}")
+		exit(1)
 	else:
 		return db, db.cursor()
 
@@ -343,6 +345,7 @@ if __name__ == "__main__":
 	DB_PATH = os.path.expanduser(DB_PATH)
 	if not os.path.exists(DB_PATH):
 		APP_LOG.error(f"Kodi\'s data directory couldnot be found: {DB_PATH}")
+		exit(1)
 	else:
 		APP_LOG.debug(f"Kodi\'s data directory exists: {DB_PATH}")
 
@@ -350,6 +353,7 @@ if __name__ == "__main__":
 	DB_PATH = os.path.join(DB_PATH, CONFIG["dbNames"][0])
 	if not os.path.exists(DB_PATH):
 		APP_LOG.error(f"Kodi\'s database couldnot be found: {DB_PATH}")
+		exit(1)
 	else:
 		APP_LOG.debug(f"Kodi\'s database exists: {DB_PATH}")
 
