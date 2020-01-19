@@ -1,7 +1,7 @@
 {
     "kodiPaths": {
         "Linux": [
-            "~/.kodi/userdata/"
+            "~/.kodi/userdata/Database/"
         ],
         "Darwin": [
             "/Library/Application Support/Kodi/userdata/"
