@@ -310,7 +310,7 @@ def logger(level):
 	strFormat = "%(asctime)s - %(levelname)-7s - %(filename)s:%(funcName)-20s:%(lineno)-3s - %(message)s"
 	logFormatter = logging.Formatter(strFormat,
 									datefmt="%d-%b-%y %H:%M")
-	logFile = "EpCleansing.log"
+	logFile = os.path.join(SCRIPT_PATH, "EpCleansing.log")
 	# file handler
 	handler = RotatingFileHandler(logFile,
 								mode='a',
