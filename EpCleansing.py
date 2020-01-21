@@ -32,7 +32,7 @@ def dict_factory(cursor, rows):
 def pretty_table(data):
 	"""Generate a CLI table with column names as headers"""
 
-	if data is None: return
+	if len(data) == 0: return "No data"
 	# store the longest string per column
 	sizes = dict()
 	# size of the headers
