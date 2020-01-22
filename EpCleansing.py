@@ -51,7 +51,13 @@ def pretty_table(data):
 		spaces = " "*(sizes[k] - len(k))
 		table += f"| {k} {spaces}"
 	table += "|"
-	table += f"\n{'='*width}\n"
+
+	# separator
+	table += f"\n"
+	for k in data[0].keys():
+		line = "=" * (sizes[k] + 2)
+		table += f"|{line}"
+	table += f"|\n"
 
 	# generate the rows
 	for row in data:
