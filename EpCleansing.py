@@ -41,7 +41,7 @@ def pretty_table(data):
 	# size of the data
 	for row in data:
 		for k, v in row.items():
-			if len(str(v)) > sizes[k]: sizes[k] = len(v)
+			if len(str(v)) > sizes[k]: sizes[k] = len(str(v))
 	# total width of the table
 	width = sum(sizes.values()) + (3*len(sizes)) + 1
 	
