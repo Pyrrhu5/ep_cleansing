@@ -116,11 +116,12 @@ def query(cursor, query_, info):
 def query_tvshows(cursor, filter_=None, filterOut=None):
 	"""Fetch all the tvshows list"""
 
-	query_ = """
-			SELECT 
-				DISTINCT(ep.idShow)		id,
-				ep.strTitle				title
-			FROM episode_view 			ep
+	query_ = """\
+SELECT 
+	ep.idShow		id,
+	ep.c00			title
+FROM
+	tvshow_view 	ep
 			"""
 	if filter_ or filterOut:
 		query_ += "WHERE\n"
