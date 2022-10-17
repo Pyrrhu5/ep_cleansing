@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
+from glob import glob, escape
+from pathlib import Path
 import sqlite3
 import os
 import platform
@@ -203,7 +205,7 @@ def save_whitelist(whitelist):
 def add_whitelist():
 
 	whitelist = load_whitelist()
-	db, cursor = connect(DB_PATH)
+	db, cursor = connect(db_path)
 
 	tvshows = query_tvshows(cursor, filterOut=whitelist)
 	print(pretty_table(tvshows))
@@ -361,33 +363,39 @@ if __name__ == "__main__":
 	else:
 		APP_LOG.debug(f"Kodi\'s data directory exists: {DB_PATH}")
 
-	# TODO: check db version
-	DB_PATH = os.path.join(DB_PATH, CONFIG["dbNames"][0])
-	if not os.path.exists(DB_PATH):
-		APP_LOG.error(f"Kodi\'s database couldnot be found: {DB_PATH}")
+	# Use the highest version of the db
+	for db in CONFIG["dbNames"][::-1]:
+		db_path = os.path.join(DB_PATH, db)
+		if os.path.exists(db_path):
+			APP_LOG.debug(f"Using {db} at {db_path}")
+			break
+		else:
+			db_path = None
+	if not db_path:
+		APP_LOG.error(f"Kodi\'s database couldnot be found.")
 		exit(1)
-	else:
-		APP_LOG.debug(f"Kodi\'s database exists: {DB_PATH}")
 
 	# Delete all
 	if args.clean:
 		whitelist = load_whitelist()
-		db, cursor = connect(DB_PATH)
+		db, cursor = connect(db_path)
 		results = query_to_del(cursor, whitelist)
 		for row in results:
-			try:
-				os.remove(row['file_path'])
-			except FileNotFoundError:
-				APP_LOG.error(f"Error while deleting, file not found:\n {row['file_path']}")
-			except Exception:
-				APP_LOG.error(f"Error while deleting {row['file_path']}", exc_info=True)
-			else:
-				APP_LOG.info(f"{row['tvshow']} - S{row['season']}E{row['episode']} deleted.")
+			file_path = Path(
+				escape(row["file_path"])  # Escape any glob illegal caracters for pattern matching
+			).with_suffix(".*")
+			for file in glob(str(file_path)):
+				try:
+					os.remove(file)
+				except Exception:
+					APP_LOG.error(f"Error while deleting {file_path}", exc_info=True)
+				else:
+					APP_LOG.info(f"{row['tvshow']} - S{row['season']}E{row['episode']} deleted: {file}.")
 		db.close()
 
 	# Display the list of available tvshows
 	elif args.tvshows:
-		db, cursor = connect(DB_PATH)
+		db, cursor = connect(db_path)
 		results = query_tvshows(cursor)
 		db.close()
 		print(pretty_table(results))
@@ -396,7 +404,7 @@ if __name__ == "__main__":
 	elif args.simu:
 		
 		whitelist = load_whitelist()
-		db, cursor = connect(DB_PATH)
+		db, cursor = connect(db_path)
 		results = query_to_del(cursor, whitelist)
 		db.close()
 		print(f"Number of episodes to delete: {len(results)}\n")
